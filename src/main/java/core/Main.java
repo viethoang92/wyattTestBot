@@ -1,7 +1,9 @@
 package core;
 
-import listeners.readyListener;
-import listeners.voiceListener;
+import commands.CmdPing;
+import listeners.CommandListener;
+import listeners.ReadyListener;
+import listeners.VoiceListener;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
@@ -23,6 +25,7 @@ public class Main {
         builder.setStatus(OnlineStatus.DO_NOT_DISTURB);
 
         addListeners();
+        addCommands();
 
         try {
             JDA jda = builder.buildBlocking();
@@ -35,8 +38,14 @@ public class Main {
         }
     }
 
+    public static void addCommands() {
+
+        CommandHandler.commands.put("ping", new CmdPing());
+    }
+
     public static void addListeners() {
-        builder.addEventListener(new readyListener());
-        builder.addEventListener(new voiceListener());
+        builder.addEventListener(new ReadyListener());
+        builder.addEventListener(new VoiceListener());
+        builder.addEventListener(new CommandListener());
     }
 }
